@@ -12,11 +12,11 @@ import {OracleUtils} from "gmx-synthetics/oracle/OracleUtils.sol";
 import {OrderHandler} from "gmx-synthetics/exchange/OrderHandler.sol";
 // chainlink
 import {FeedLookupCompatibleInterface} from "chainlink/dev/automation/2_1/interfaces/FeedLookupCompatibleInterface.sol";
-import {ILogAutomation, Log} from "chainlink/dev/automation/2_1/interfaces/ILogAutomation.sol";
+import {Log} from "chainlink/dev/automation/2_1/interfaces/ILogAutomation.sol";
 
 /// @title Market Automation - Handles Market Decrease, Increase and Swap cases
 /// @author Alex Roan - Cyfrin (@alexroan)
-contract MarketAutomation is ILogAutomation, FeedLookupCompatibleInterface, GMXAutomationBase {
+contract MarketAutomation is FeedLookupCompatibleInterface, GMXAutomationBase {
     using LibGMXEventLogDecoder for Log;
     using LibGMXEventLogDecoder for EventUtils.EventLogData;
 
@@ -51,7 +51,7 @@ contract MarketAutomation is ILogAutomation, FeedLookupCompatibleInterface, GMXA
     /// @dev Reverts with custom errors if the event name is not equal to the expected event name (OrderCreated), or if the orderType is not equal to the expected orderType (4)
     /// @dev In the success case, reverts with DataStreamsLookup error containing relevant information for the data streams lookup
     /// @dev This function is only ever simulated off-chain, and is very gas intensive.
-    function checkLog(Log calldata log) external returns (bool, bytes memory) {
+    function checkLog(Log calldata log, bytes memory) external returns (bool, bytes memory) {
         // Decode Event Log 2
         (
             , //msgSender,
